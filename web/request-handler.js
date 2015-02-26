@@ -7,7 +7,7 @@ var helpers = require('./http-helpers.js');
 exports.handleRequest = function (req, res) {
 
   var targetSite = url.parse(req.url).query;
-  archive.readListOfUrls(targetSite);
+  console.log(archive.readListOfUrls(targetSite));
   res.writeHead(200, helpers.headers);
   res.end(archive.paths.list);
 };
