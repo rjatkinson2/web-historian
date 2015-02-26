@@ -37,6 +37,9 @@ exports.readListOfUrls = function(site, cb){
 exports.isUrlInList = function(content, targetSite, cb){
   var sites = content.split('\n').slice(0,-1);
   var contains = _.contains(sites, targetSite);
+  console.log(sites);
+  console.log(targetSite);
+  console.log(contains);
   if(contains){
     cb(true);
   } else{

@@ -1,10 +1,4 @@
-text.com
-test.com
-once.com
-once.co
-asdf.co
-teamview.com
-see.com
-a.co
-me.we
-ifiififfif.com
+Amazon.com
+Google.com
+Webosplash.com
+Dojo.com

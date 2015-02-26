@@ -12,13 +12,19 @@ var app = {
     $.ajax({
       type: 'GET',
       url: 'http://127.0.0.1:8080',
-      dataType: 'html',
+      dataType: 'json',
       data: site,
       success: function(data, status){
-        console.log(data);
-        $('document').html(data);
+        // document.open();
+        // document.write(data);
+        // document.close();
+        debugger;
+        if(data.redirect) {
+          console.log('redirect!!')
+        }
       },
-      error: function(event){
+     error: function(event){
+        console.log(arguments);
         //do something with the event
         // console.log(event);
       }
