@@ -26,25 +26,21 @@ exports.initialize = function(pathsObj){
 // modularize your code. Keep it clean!
 
 exports.readListOfUrls = function(site){
-  var test = null;
   fs.readFile(exports.paths.list, 'utf8', function(err, data) {
     if (err) {
       throw err;
     }
-    test = exports.isUrlInList(data, site);
+    exports.isUrlInList(data, site);
   });
-  return test;
 };
 
 exports.isUrlInList = function(content, targetSite){
   var sites = content.split('\n').slice(0,-1);
   var contains = _.contains(sites, targetSite);
   if(contains){
-    console.log('in list');
     return true;
   }else{
     exports.addUrlToList(targetSite);
-    console.log('not in list');
     return false;
   }
 };

@@ -7,12 +7,24 @@ exports.headers = headers = {
   "access-control-allow-methods": "GET, POST, PUT, DELETE, OPTIONS",
   "access-control-allow-headers": "content-type, accept",
   "access-control-max-age": 10, // Seconds.
-  'Content-Type': "text/html"
+  "Content-Type": "text/html"
 };
 
 exports.serveAssets = function(res, asset, callback) {
   // Write some code here that helps serve up your static files!
   // (Static files are things like html (yours or archived from others...), css, or anything that doesn't change often.)
+  var html = path.join(__dirname, asset);
+  console.log(html);
+  console.log(asset);
+  fs.readFile(html, 'utf8', function(err, data) {
+    if (err) {
+      throw err;
+    }
+    // console.log(data);
+    res.writeHead(200, headers);
+    console.log(data);
+    res.end(data);
+  });
 };
 
 

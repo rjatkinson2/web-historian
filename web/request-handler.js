@@ -4,10 +4,22 @@ var archive = require('../helpers/archive-helpers');
 var helpers = require('./http-helpers.js');
 // require more modules/folders here!
 
-exports.handleRequest = function (req, res) {
+var asset;
 
+exports.handleRequest = function (req, res) {
+  if(req.url === "/"){
+    asset = './public/index.html';
+    helpers.serveAssets(res,asset);
+  }
   var targetSite = url.parse(req.url).query;
-  console.log(archive.readListOfUrls(targetSite));
-  res.writeHead(200, helpers.headers);
-  res.end(archive.paths.list);
+  // if(archive.readListOfUrls(targetSite)){
+  //   // give archived page
+  // }else{
+  //   // give loading.html
+  //   asset = './public/loading.html';
+  //   helpers.serveAssets(res,asset);
+  // }
+  // res.writeHead(200, helpers.headers);
+  // res.end();
+  // return;
 };
