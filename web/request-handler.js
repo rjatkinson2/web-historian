@@ -6,10 +6,32 @@ var helpers = require('./http-helpers.js');
 
 var asset;
 
-exports.handleRequest = function (req, res) {
-  if(req.url === "/"){
+var requests = {
+  "/": function(res){
     asset = './public/index.html';
-    helpers.serveAssets(res,asset);
+    helpers.serveAssets(res, asset);
+  },
+  "/index.html": function(res){
+    asset = './public/index.html';
+    helpers.serveAssets(res, asset);
+  },
+  "/styles.css": function(res){
+    asset = './public/styles.css';
+    helpers.serveAssets(res, asset);
+  },
+  "/app.js": function(res){
+    asset = './public/app.js';
+    helpers.serveAssets(res, asset);
+  },
+  "/jquery.min.js": function(res){
+    asset = '../bower_components/jquery/dist/jquery.min.js';
+    helpers.serveAssets(res, asset);
+  }
+};
+
+exports.handleRequest = function (req, res) {
+  if(requests[req.url]){
+    requests[req.url](res);
   }
   var targetSite = url.parse(req.url).query;
   // if(archive.readListOfUrls(targetSite)){
