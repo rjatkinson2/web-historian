@@ -12,13 +12,15 @@ var app = {
     $.ajax({
       type: 'GET',
       url: 'http://127.0.0.1:8080',
-      dataType: 'text/plain',
+      dataType: 'html',
       data: site,
       success: function(data, status){
-        //do something with data or status
+        console.log(data);
+        $('document').html(data);
       },
       error: function(event){
         //do something with the event
+        // console.log(event);
       }
     });
   }

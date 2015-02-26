@@ -4,44 +4,53 @@ var archive = require('../helpers/archive-helpers');
 var helpers = require('./http-helpers.js');
 // require more modules/folders here!
 
-var asset;
+var asset, ct;
 
 var requests = {
   "/": function(res){
     asset = './public/index.html';
-    helpers.serveAssets(res, asset);
+    ct = "text/html";
+    helpers.serveAssets(res, asset, ct);
   },
   "/index.html": function(res){
     asset = './public/index.html';
-    helpers.serveAssets(res, asset);
+    ct = "text/html";
+    helpers.serveAssets(res, asset, ct);
   },
   "/styles.css": function(res){
     asset = './public/styles.css';
-    helpers.serveAssets(res, asset);
+    ct = "text/css";
+    helpers.serveAssets(res, asset, ct);
   },
   "/app.js": function(res){
     asset = './public/app.js';
-    helpers.serveAssets(res, asset);
+    ct = "application/javascript";
+    helpers.serveAssets(res, asset, ct);
   },
-  "/jquery.min.js": function(res){
-    asset = '../bower_components/jquery/dist/jquery.min.js';
-    helpers.serveAssets(res, asset);
+  "/jquery.js": function(res){
+    asset = '../bower_components/jquery/dist/jquery.js';
+    ct = "application/javascript";
+    helpers.serveAssets(res, asset, ct);
+  },
+  "/favicon.ico": function(res){
+    res.writeHead(404,helpers.headers);
+    res.end();
   }
 };
 
 exports.handleRequest = function (req, res) {
   if(requests[req.url]){
     requests[req.url](res);
+  }else{
+    var targetSite = url.parse(req.url).query;
+      // give archived page
+    archive.readListOfUrls(targetSite, function(found) {
+      if(!found) {
+        console.log('couldnt find file!');
+        helpers.serveAssets(res, './public/loading.html', 'text/html');
+      } else {
+        //render the page we have stored in the DB
+      }
+    });
   }
-  var targetSite = url.parse(req.url).query;
-  // if(archive.readListOfUrls(targetSite)){
-  //   // give archived page
-  // }else{
-  //   // give loading.html
-  //   asset = './public/loading.html';
-  //   helpers.serveAssets(res,asset);
-  // }
-  // res.writeHead(200, helpers.headers);
-  // res.end();
-  // return;
 };
