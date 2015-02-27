@@ -21,11 +21,10 @@ var requests = {
       });
       req.on('end', function(){
         var targetSite = data.split('=')[1];
-        runner.test();
         archive.readListOfUrls(targetSite, function(found) {
           if(!found){
             //send em to domo arigato, our mr. roboto
-            archive.downloadUrls(targetSite);
+            // archive.downloadUrls(targetSite);
             res.statusCode = 302;
             res.setHeader("Location", "loading.html");
             res.end();

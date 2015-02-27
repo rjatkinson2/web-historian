@@ -16,3 +16,15 @@ stackoverflow.com
 amazon.com
 www.amazon.com
 boogiewoogie.com
+golf.com
+nfl.com
+fifa.com
+pinterest.com
+twitter.com
+linkedin.com
+lowes.com
+node.com
+birds.com
+www.lowes.com
+www.birds.com
+www.moon.com
