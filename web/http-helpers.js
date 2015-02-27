@@ -16,7 +16,7 @@ exports.serveAssets = function(res, asset, ct, callback) {
   var html = path.join(__dirname, asset);
   fs.readFile(html, 'utf8', function(err, data) {
     if (err) {
-      throw err;
+      console.log(err);
     }
     // console.log(data);
     headers['Content-Type'] = ct;

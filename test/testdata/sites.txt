@@ -1,4 +1,1 @@
-example1.com
-example2.comfunction (urls){
-      resultArray = urls;
-    }
+www.example.com

@@ -1,6 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 var _ = require('underscore');
+var http = require('http');
 
 /*
  * You will need to reuse the same paths many times over in the course of this sprint.
@@ -35,11 +36,8 @@ exports.readListOfUrls = function(site, cb){
 };
 
 exports.isUrlInList = function(content, targetSite, cb){
-  var sites = content.split('\n').slice(0,-1);
+  var sites = content.split('\n').slice(0, -1);
   var contains = _.contains(sites, targetSite);
-  console.log(sites);
-  console.log(targetSite);
-  console.log(contains);
   if(contains){
     cb(true);
   } else{
@@ -57,8 +55,32 @@ exports.addUrlToList = function(targetSite){
   });
 };
 
-exports.isURLArchived = function(){
+exports.isURLArchived = function(targetSite, callback){
+  //find some way to check file structure
+
 };
 
-exports.downloadUrls = function(){
+exports.downloadUrls = function(siteName){
+  //issue get requests to various websites
+  if (!fs.existsSync(exports.paths.archivedSites + '/' + siteName)){
+    fs.mkdirSync(exports.paths.archivedSites + '/' + siteName);
+    http.get("http://" + siteName, function(res) {
+      console.log("Got response: " + res.statusCode);
+
+      var data = '';
+      res.on('data',function(chunk){
+        data += chunk;
+      });
+      res.on('end',function(){
+        var fileName = exports.paths.archivedSites + '/' + siteName +'/' + siteName + '.html';
+        console.log(fileName);
+        console.log(data);
+        fs.writeFile(fileName, data, 'utf8', function() {
+           console.log('done');
+        });
+      });
+    }).on('error', function(e) {
+      console.log("Got error: " + e.message);
+    });
+  }
 };

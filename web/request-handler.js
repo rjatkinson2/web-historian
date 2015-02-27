@@ -1,7 +1,8 @@
 var path = require('path');
 var url = require('url');
-var archive = require('../helpers/archive-helpers');
+var archive = require('../helpers/archive-helpers.js');
 var helpers = require('./http-helpers.js');
+var runner = require('../helpers/cronRunner.js');
 // require more modules/folders here!
 
 var asset, ct;
@@ -20,22 +21,25 @@ var requests = {
       });
       req.on('end', function(){
         var targetSite = data.split('=')[1];
+        runner.test();
         archive.readListOfUrls(targetSite, function(found) {
           if(!found){
             //send em to domo arigato, our mr. roboto
+            archive.downloadUrls(targetSite);
             res.statusCode = 302;
             res.setHeader("Location", "loading.html");
             res.end();
           } else {
             //render the page we have stored in the DB
             res.statusCode = 302;
-            res.setHeader("Location", targetSite);
+            res.setHeader("Location", '/archive/'+ targetSite);
             res.end();
           }
         });
       });
     }
   },
+
   "/index.html": function(req, res){
     asset = './public/index.html';
     ct = "text/html";
@@ -68,24 +72,17 @@ var requests = {
 };
 
 exports.handleRequest = function (req, res) {
-  console.log(req.method);
+  console.log('serving request for ' + req.method + ' at url ' + req.url);
   if(requests[req.url]){
     requests[req.url](req,res);
-  }else{
-    // var targetSite = url.parse(req.url).query;
-    //   // give archived page
-    // archive.readListOfUrls(targetSite, function(found) {
-    //   if(!found) {
-    //     console.log('couldnt find file!');
-    //     res.statusCode = 302;
-    //     res.setHeader("Location", "loading.html");
-    //     res.end(JSON.stringify({redirect: true, location: 'http://127.0.0.1/loading.html'}));
-    //     // helpers.serveAssets(res, './public/loading.html', 'text/html');
-
-    //   } else {
-    //     //render the page we have stored in the DB
-    //     //
-    //   }
-    // });
+  } else if( req.url.indexOf('archive') > -1 ){
+    var targetSite = req.url.split('archive')[1];
+    // targetSite = targetSite.replace(/.com/, '.html');
+    var asset = './archives/sites' + '/' + targetSite + '/' + targetSite + '.html';
+    var ct = 'text/html';
+    helpers.serveAssets(res, asset, ct);
+  } else {
+    res.writeHead(404, helpers.headers);
+    res.end();
   }
 };
